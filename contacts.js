@@ -16,7 +16,7 @@ async function listContacts() {
 async function getContactById(contactId) {
   try {
     const contactsList = await listContacts();
-    const contact = contactsList.find(({ id }) => id === contactId);
+    const contact = contactsList.find(({ id }) => id.toString() === contactId);
 
     if (!contact) {
       throw Error("Incorrect id");
@@ -30,13 +30,17 @@ async function getContactById(contactId) {
 async function removeContact(contactId) {
   try {
     const contactsList = await listContacts();
-    const index = contactsList.findIndex(({ id }) => id === contactId);
+    const index = contactsList.findIndex(
+      ({ id }) => id.toString() === contactId
+    );
 
     if (index === -1) {
       throw Error("Incorrect id");
     }
 
-    const filteredContacts = contactsList.filter(({ id }) => id !== contactId);
+    const filteredContacts = contactsList.filter(
+      ({ id }) => id.toString() !== contactId
+    );
     await rewriteFile(filteredContacts);
   } catch (error) {
     throw error;
